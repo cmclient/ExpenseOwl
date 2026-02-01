@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
     <link rel="apple-touch-icon" href="/pwa/icon-192.png">
     <link rel="stylesheet" href="/style.css">
     <script>
-        (function() {
+        (function () {
             const theme = localStorage.getItem('theme') || 'system';
             if (theme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -30,12 +31,14 @@
     <title>ExpenseOwl Dashboard</title>
     <script src="/chart.min.js"></script>
 </head>
+
 <body>
     <div class="container">
         <header>
             <div class="nav-bar">
                 <a href="/">
-                    <img src="/pwa/icon-192.png" alt="ExpenseOwl Logo" height="85" style="vertical-align: middle; margin-right: 20px;">
+                    <img src="/pwa/icon-192.png" alt="ExpenseOwl Logo" height="85"
+                        style="vertical-align: middle; margin-right: 20px;">
                 </a>
                 <a href="/" class="view-button active" data-tooltip="Dashboard">
                     <i class="fa-solid fa-chart-pie"></i>
@@ -66,14 +69,14 @@
                         <label for="name">Name</label>
                         <input type="text" id="name" value="-" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="category">Category</label>
                         <select id="category" required>
                             <option value="">categories</option>
                         </select>
                     </div>
-    
+
                     <div class="form-group">
                         <label for="tags-input">Tags</label>
                         <div id="tags-input-container" class="tags-input-container">
@@ -82,12 +85,12 @@
                         </div>
                         <div id="tags-dropdown" class="tags-dropdown"></div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="amount">Amount</label>
                         <input type="number" id="amount" step="0.01" min="0.01" max="9000000000000000" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="date">Date</label>
                         <input type="date" id="date" required>
@@ -100,12 +103,12 @@
                             document.getElementById('date').value = formattedDate;
                         </script>
                     </div>
-                    
+
                     <div class="form-group form-group-checkbox">
                         <label for="reportGain">Report Gain</label>
                         <input type="checkbox" id="reportGain" class="styled-checkbox">
                     </div>
-    
+
                     <button type="submit" class="nav-button">Add Expense</button>
                 </form>
                 <div id="formMessage" class="form-message"></div>
@@ -113,7 +116,8 @@
         </div>
 
         <div class="chart-container">
-            <div id="noDataMessage" class="no-data" style="display: none; width: 100%;">No expenses recorded this month.</div>
+            <div id="noDataMessage" class="no-data" style="display: none; width: 100%;">No expenses recorded this month.
+            </div>
             <div class="chart-box">
                 <canvas id="categoryPieChart"></canvas>
             </div>
@@ -133,6 +137,10 @@
             <div class="cashflow-item balance">
                 <div class="cashflow-label">Balance</div>
                 <div class="cashflow-value" id="cashflow-balance"></div>
+            </div>
+            <div class="cashflow-item total-balance">
+                <div class="cashflow-label">Total Balance</div>
+                <div class="cashflow-value" id="cashflow-total-balance"></div>
             </div>
         </div>
     </div>
@@ -209,7 +217,7 @@
                 legendBox.style.display = 'flex';
                 cashflowSection.style.display = 'flex';
                 noDataMessage.style.display = 'none';
-                
+
                 const categoryData = calculateCategoryBreakdown(monthExpenses);
                 updateCashflow(monthExpenses);
                 createPieChart(categoryData);
@@ -221,11 +229,11 @@
             const income = calculateIncome(expenses);
             const expenseTotal = calculateExpenses(expenses);
             const balance = income - expenseTotal;
-            
+
             document.getElementById('cashflow-income').textContent = formatCurrency(income);
             document.getElementById('cashflow-expenses').textContent = formatCurrency(expenseTotal);
             document.getElementById('cashflow-balance').textContent = formatCurrency(balance);
-            
+
             const balanceElement = document.getElementById('cashflow-balance');
             if (balance >= 0) {
                 balanceElement.classList.add('positive');
@@ -233,6 +241,21 @@
             } else {
                 balanceElement.classList.add('negative');
                 balanceElement.classList.remove('positive');
+            }
+
+            const totalIncome = calculateIncome(allExpenses);
+            const totalExpenses = calculateExpenses(allExpenses);
+            const totalBalance = totalIncome - totalExpenses;
+
+            const totalBalanceElement = document.getElementById('cashflow-total-balance');
+            totalBalanceElement.textContent = formatCurrency(totalBalance);
+
+            if (totalBalance >= 0) {
+                totalBalanceElement.classList.add('positive');
+                totalBalanceElement.classList.remove('negative');
+            } else {
+                totalBalanceElement.classList.add('negative');
+                totalBalanceElement.classList.remove('positive');
             }
         }
 
@@ -279,7 +302,7 @@
                 .filter(exp => exp.amount < 0)
                 .map(exp => exp.category))];
             const categoryMap = new Map(categoryData.map(cat => [cat.category, cat]));
-            
+
             currentMonthCategories.sort((a, b) => {
                 const dataA = categoryMap.get(a);
                 const dataB = categoryMap.get(b);
@@ -337,12 +360,12 @@
                 if (!configResponse.ok) throw new Error('Failed to fetch configuration');
                 const config = await configResponse.json();
                 const categorySelect = document.getElementById('category');
-                categorySelect.innerHTML = config.categories.map(cat => 
+                categorySelect.innerHTML = config.categories.map(cat =>
                     `<option value="${cat}">${cat}</option>`
                 ).join('');
                 currentCurrency = config.currency;
                 startDate = config.startDate;
-                
+
                 const response = await fetch('/expenses');
                 if (!response.ok) throw new Error('Failed to fetch data');
                 const data = await response.json();
@@ -354,7 +377,7 @@
                         exp.tags.forEach(tag => allTags.add(tag));
                     }
                 });
-                
+
                 const uniqueCategories = [...new Set(allExpenses.map(exp => exp.category))];
                 assignCategoryColors(uniqueCategories);
                 updateMonthDisplay();
@@ -415,7 +438,7 @@
                 const value = input.value.trim().toLowerCase();
                 dropdown.innerHTML = '';
                 const filteredTags = [...allTags].filter(tag => tag.toLowerCase().includes(value) && !selectedTags.has(tag));
-                
+
                 if (value && ![...allTags].map(t => t.toLowerCase()).includes(value)) {
                     const newItem = document.createElement('div');
                     newItem.textContent = `+ Create "${input.value.trim()}"`;
@@ -430,7 +453,7 @@
                     item.onclick = () => addTag(tag);
                     dropdown.appendChild(item);
                 });
-                
+
                 dropdown.style.display = dropdown.children.length > 0 ? 'block' : 'none';
             });
 
@@ -463,7 +486,7 @@
             updateChartAndLegend();
         });
 
-        document.getElementById('toggleExpenseFormBtn').addEventListener('click', function() {
+        document.getElementById('toggleExpenseFormBtn').addEventListener('click', function () {
             const formContainer = document.getElementById('addExpenseContainer');
             const isHidden = formContainer.style.display === 'none' || formContainer.style.display === '';
 
@@ -534,4 +557,5 @@
         });
     </script>
 </body>
+
 </html>
