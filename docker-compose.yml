@@ -1,0 +1,8 @@
+services:
+  expenseowl:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 5006:8080 # change 5006 to what you want to expose on
+    volumes:
+      - ./data:/app/data # change dir as needed

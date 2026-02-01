@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/fa.min.css">
     <link rel="stylesheet" href="/style.css">
     <script>
-        (function() {
+        (function () {
             const theme = localStorage.getItem('theme') || 'system';
             if (theme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -17,12 +18,14 @@
     </script>
     <title>ExpenseOwl Table</title>
 </head>
+
 <body>
     <div class="container">
         <header>
             <div class="nav-bar">
                 <a href="/">
-                    <img src="/pwa/icon-192.png" alt="ExpenseOwl Logo" height="85" style="vertical-align: middle; margin-right: 20px;">
+                    <img src="/pwa/icon-192.png" alt="ExpenseOwl Logo" height="85"
+                        style="vertical-align: middle; margin-right: 20px;">
                 </a>
                 <a href="/" class="view-button" data-tooltip="Dashboard">
                     <i class="fa-solid fa-chart-pie"></i>
@@ -41,7 +44,12 @@
             <div class="current-month" id="currentMonth"></div>
             <button id="nextMonth" class="nav-button"><i class="fa-solid fa-arrow-right"></i></button>
         </div>
-        
+
+        <div class="total-balance-card">
+            <div class="label">Total Balance</div>
+            <div class="value" id="cashflow-total-balance"></div>
+        </div>
+
         <div class="table-controls">
             <label for="showAllToggle">
                 <input type="checkbox" id="showAllToggle" class="styled-checkbox"> Show All Transactions
@@ -54,7 +62,7 @@
                     <label for="name">Name</label>
                     <input type="text" id="name" value="-" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select id="category" required>
@@ -70,12 +78,12 @@
                     </div>
                     <div id="tags-dropdown" class="tags-dropdown"></div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="amount">Amount</label>
                     <input type="number" id="amount" step="0.01" min="0.01" max="9000000000000000" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="date">Date</label>
                     <input type="date" id="date" required>
@@ -88,7 +96,7 @@
                         document.getElementById('date').value = formattedDate;
                     </script>
                 </div>
-                
+
                 <div class="form-group form-group-checkbox">
                     <label for="reportGain">Report Gain</label>
                     <input type="checkbox" id="reportGain" class="styled-checkbox">
@@ -124,11 +132,36 @@
         let allTags = new Set();
         let selectedTags = new Set();
 
+        function calculateIncome(expenses) {
+            return expenses
+                .filter(e => e.amount > 0)
+                .reduce((sum, e) => sum + e.amount, 0);
+        }
+
+        function calculateExpenses(expenses) {
+            return expenses
+                .filter(e => e.amount < 0)
+                .reduce((sum, e) => sum + Math.abs(e.amount), 0);
+        }
+
+        function updateTotalBalance() {
+            const income = calculateIncome(allExpenses);
+            const expenses = calculateExpenses(allExpenses);
+            const totalBalance = income - expenses;
+
+            const el = document.getElementById('cashflow-total-balance');
+            if (!el) return;
+
+            el.textContent = formatCurrency(totalBalance);
+            el.classList.toggle('positive', totalBalance >= 0);
+            el.classList.toggle('negative', totalBalance < 0);
+        }
+
         function createTable(expenses) {
             if (!expenses || expenses.length === 0) {
-                const message = document.getElementById('showAllToggle').checked ? 
-                                'No transactions found' : 
-                                'No expenses recorded for this month';
+                const message = document.getElementById('showAllToggle').checked ?
+                    'No transactions found' :
+                    'No expenses recorded for this month';
                 return `<div class="no-data">${message}</div>`;
             }
             const hasTags = expenses.some(exp => exp.tags && exp.tags.length > 0);
@@ -174,7 +207,7 @@
             expensesForTable = showAll
                 ? allExpenses.slice().sort((a, b) => new Date(b.date) - new Date(a.date))
                 : getMonthExpenses(allExpenses);
-            
+
             const tableContainer = document.getElementById('tableContainer');
             tableContainer.innerHTML = createTable(expensesForTable);
         }
@@ -214,18 +247,18 @@
             document.getElementById('amount').value = Math.abs(amount);
             document.getElementById('reportGain').checked = isGain;
             renderSelectedTags(tags);
-            
+
             const localDate = new Date(date);
             const year = localDate.getFullYear();
             const month = String(localDate.getMonth() + 1).padStart(2, '0');
             const day = String(localDate.getDate()).padStart(2, '0');
             document.getElementById('date').value = `${year}-${month}-${day}`;
-            
+
             const form = document.getElementById('expenseForm');
             form.dataset.editId = id;
             const submitButton = form.querySelector('button[type="submit"]');
             submitButton.textContent = 'Update Expense';
-            
+
             form.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -263,8 +296,8 @@
                 const value = input.value.trim().toLowerCase();
                 dropdown.innerHTML = '';
                 const filteredTags = [...allTags].filter(tag => tag.toLowerCase().includes(value) && !selectedTags.has(tag));
-                
-                if(value && ![...allTags].map(t => t.toLowerCase()).includes(value)) {
+
+                if (value && ![...allTags].map(t => t.toLowerCase()).includes(value)) {
                     const newItem = document.createElement('div');
                     newItem.textContent = `+ Create "${input.value.trim()}"`;
                     newItem.className = 'new-tag';
@@ -280,7 +313,7 @@
                         dropdown.appendChild(item);
                     });
                 }
-                
+
                 dropdown.style.display = 'block';
                 if (dropdown.children.length === 0) dropdown.style.display = 'none';
             });
@@ -308,17 +341,17 @@
                 if (!configResponse.ok) throw new Error('Failed to fetch configuration');
                 const config = await configResponse.json();
                 const categorySelect = document.getElementById('category');
-                categorySelect.innerHTML = config.categories.map(cat => 
+                categorySelect.innerHTML = config.categories.map(cat =>
                     `<option value="${cat}">${cat}</option>`
                 ).join('');
                 currentCurrency = config.currency;
                 startDate = config.startDate;
-                
+
                 const response = await fetch('/expenses');
                 if (!response.ok) throw new Error('Failed to fetch data');
                 const data = await response.json();
                 allExpenses = Array.isArray(data) ? data : (data && Array.isArray(data.expenses) ? data.expenses : []);
-                
+
                 allTags.clear();
                 allExpenses.forEach(exp => {
                     if (exp.tags) {
@@ -328,10 +361,11 @@
 
                 updateMonthDisplay();
                 updateTable();
+                updateTotalBalance();
                 setupTagInput();
             } catch (error) {
                 console.error('Failed to initialize table:', error);
-                document.getElementById('tableContainer').innerHTML = 
+                document.getElementById('tableContainer').innerHTML =
                     '<div class="no-data">Failed to load expenses</div>';
             }
         }
@@ -456,8 +490,9 @@
                 e.target.value = '';
             }
         });
-        
+
         window.editExpenseByIndex = editExpenseByIndex;
     </script>
 </body>
+
 </html>
