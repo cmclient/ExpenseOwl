@@ -1,3 +1,23 @@
+<table>
+  <tr>
+    <td align="center">
+      <h2>⚠️ ExpenseOwl is no longer maintained</h2>
+      <p>
+        <strong>Looking for a modern, actively maintained alternative?</strong><br>
+        Meet <a href="https://github.com/cmclient/expenses-next"><strong>Expenses Next</strong></a> - a more feature-rich expense tracker with a refreshed interface, built with Next.js and HeroUI.
+      </p>
+      <p>
+        Multi-user support&nbsp; • &nbsp;Password authentication&nbsp; • &nbsp;Multiple languages<br>
+        Enhanced dashboard&nbsp; • &nbsp;Recurring expenses&nbsp; • &nbsp;Reminders
+      </p>
+      <p><strong>Switching from ExpenseOwl?</strong> Import your existing ExpenseOwl data.</p>
+      <p><a href="https://github.com/cmclient/expenses-next"><strong>Explore Expenses Next →</strong></a></p>
+    </td>
+  </tr>
+</table>
+
+<h1 align="center"></h1><br>
+
 <p align="center">
 <img src="/assets/logo.png" alt="ExpenseOwl Logo" width="200" height="200" /><br>
 </p>
