@@ -1,20 +1,56 @@
+<!-- ══════════════════ DEPRECATION NOTICE ══════════════════ -->
+<table align="center">
+<tr>
+<td align="center" width="760">
+
+<h2>🪦&nbsp; ExpenseOwl is no longer maintained</h2>
+
+<p>
+<img src="https://img.shields.io/badge/status-unmaintained-critical?style=for-the-badge" alt="Unmaintained">
+&nbsp;
+<img src="https://img.shields.io/badge/bug%20fixes-none-inactive?style=for-the-badge" alt="No bug fixes">
+&nbsp;
+<img src="https://img.shields.io/badge/security%20patches-none-inactive?style=for-the-badge" alt="No security patches">
+</p>
+
+<p>
+The code stays here for reference, but it won't get new features, fixes, or updates.<br>
+<strong>Looking for a modern, actively maintained alternative?</strong>
+</p>
+
+<h3>Meet <a href="https://github.com/cmclient/expenses-next">Expenses&nbsp;Next</a></h3>
+
+<p>
+Everything ExpenseOwl did, plus the things it never could — rebuilt with <strong>Next.js</strong> and <strong>HeroUI</strong>.
+</p>
+
 <table>
-  <tr>
-    <td align="center">
-      <h2>⚠️ ExpenseOwl is no longer maintained</h2>
-      <p>
-        <strong>Looking for a modern, actively maintained alternative?</strong><br>
-        Meet <a href="https://github.com/cmclient/expenses-next"><strong>Expenses Next</strong></a> - a more feature-rich expense tracker with a refreshed interface, built with Next.js and HeroUI.
-      </p>
-      <p>
-        Multi-user support&nbsp; • &nbsp;Password authentication&nbsp; • &nbsp;Multiple languages<br>
-        Enhanced dashboard&nbsp; • &nbsp;Recurring expenses&nbsp; • &nbsp;Reminders
-      </p>
-      <p><strong>Switching from ExpenseOwl?</strong> Import your existing ExpenseOwl data.</p>
-      <p><a href="https://github.com/cmclient/expenses-next"><strong>Explore Expenses Next →</strong></a></p>
-    </td>
-  </tr>
+<tr>
+<td align="center" width="200">👥<br><strong>Multi-user</strong><br><sub>One instance, separate accounts</sub></td>
+<td align="center" width="200">🔐<br><strong>Password auth</strong><br><sub>Built in, no proxy gymnastics</sub></td>
+<td align="center" width="200">🌍<br><strong>Multiple languages</strong><br><sub>Not English-only</sub></td>
+</tr>
+<tr>
+<td align="center">📊<br><strong>Enhanced dashboard</strong><br><sub>More than one chart</sub></td>
+<td align="center">🔁<br><strong>Recurring expenses</strong><br><sub>Set it once</sub></td>
+<td align="center">🔔<br><strong>Reminders</strong><br><sub>Never forget to log</sub></td>
+</tr>
 </table>
+
+<p>
+📦&nbsp; <strong>Switching from ExpenseOwl?</strong> Import your existing data directly — nothing to re-enter.
+</p>
+
+<p>
+<a href="https://github.com/cmclient/expenses-next">
+<img src="https://img.shields.io/badge/Explore%20Expenses%20Next%20%E2%86%92-111827?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Explore Expenses Next">
+</a>
+</p>
+
+</td>
+</tr>
+</table>
+<!-- ════════════════════════════════════════════════════════ -->
 
 <h1 align="center"></h1><br>
 
